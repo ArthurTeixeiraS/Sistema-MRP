@@ -1,28 +1,35 @@
 import styled from "styled-components";
 
 export const MainContainer = styled.div`
-    label{
-        margin-right: .5rem;
-    }
+  padding: 1rem;
+  font-family: sans-serif;
 
-    input[type="text"]{
-        margin-right: .8rem;
-        width: 15rem;
-    }
+  form {
+    margin-bottom: 1rem;
+  }
 
-    input[type="number"]{
-        width: 3rem;
-        margin-right: .5rem;
-    }
+  label {
+    margin-right: 0.5rem;
+  }
 
-`
-export const TopContainer = styled.header`
-    height: 15vh;
-    border-bottom: 0.1rem solid black;
-    padding: .5rem;
-`
+  input[type="text"],
+  input[type="number"] {
+    margin-right: 0.8rem;
+    width: 15rem;
+  }
 
-export const GridContainer = styled.div`
-    top: 15vh;
-    padding: 1rem;
-`
+  button {
+    padding: 0.3rem 1rem;
+    cursor: pointer;
+  }
+
+  table {
+    margin-top: 1rem;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    text-align: left;
+  }
+`;
