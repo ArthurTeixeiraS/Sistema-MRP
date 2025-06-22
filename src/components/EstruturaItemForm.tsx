@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { EstruturaItem } from "../App";
 
 interface Props {
@@ -12,24 +12,46 @@ const EstruturaItemForm: React.FC<Props> = ({ adicionarItem }) => {
     quantidade: 0,
   });
 
-const handleAdd = () => {
+  useEffect(() => {
+    const buscarNomeMaterial = async () => {
+      if (item.idMaterial > 0) {
+        try {
+          const response = await fetch(`http://localhost:3001/estrutura/material/${item.idMaterial}`);
+          if (response.ok) {
+            const data = await response.json();
+            setItem((prev) => ({ ...prev, nomeMaterial: data.nome }));
+          } else {
+            setItem((prev) => ({ ...prev, nomeMaterial: "" }));
+          }
+        } catch (error) {
+          console.error("Erro ao buscar material:", error);
+          setItem((prev) => ({ ...prev, nomeMaterial: "" }));
+        }
+      } else {
+        setItem((prev) => ({ ...prev, nomeMaterial: "" }));
+      }
+    };
+
+    buscarNomeMaterial();
+  }, [item.idMaterial]);
+
+  const handleAdd = () => {
     if (item.idMaterial <= 0) {
-        alert("Código do material deve ser maior que zero.");
-        return;
+      alert("Código do material deve ser maior que zero.");
+      return;
     }
     if (!item.nomeMaterial.trim()) {
-        alert("Nome do material não pode estar vazio.");
-        return;
+      alert("Nome do material não pode estar vazio.");
+      return;
     }
     if (item.quantidade <= 0) {
-        alert("Quantidade deve ser maior que zero.");
-        return;
+      alert("Quantidade deve ser maior que zero.");
+      return;
     }
 
     adicionarItem(item);
     setItem({ idMaterial: 0, nomeMaterial: "", quantidade: 0 });
-};
-
+  };
 
   return (
     <section>
@@ -37,26 +59,32 @@ const handleAdd = () => {
       <form>
         <label htmlFor="idMaterial">Cód. Material</label>
         <input
-            type="number"
-            name="idMaterial"
-            min={1}
-            value={item.idMaterial}
-            onChange={(e) => setItem({ ...item, idMaterial: Number(e.target.value) })}
+          type="number"
+          name="idMaterial"
+          min={1}
+          value={item.idMaterial}
+          onChange={(e) =>
+            setItem({ ...item, idMaterial: Number(e.target.value) })
+          }
         />
         <input
-            type="text"
-            name="nomeMaterial"
-            value={item.nomeMaterial}
-            onChange={(e) => setItem({ ...item, nomeMaterial: e.target.value })}
+          type="text"
+          name="nomeMaterial"
+          value={item.nomeMaterial}
+          readOnly
         />
         <input
-            type="number"
-            name="quantidade"
-            min={1}
-            value={item.quantidade}
-            onChange={(e) => setItem({ ...item, quantidade: Number(e.target.value) })}
+          type="number"
+          name="quantidade"
+          min={1}
+          value={item.quantidade}
+          onChange={(e) =>
+            setItem({ ...item, quantidade: Number(e.target.value) })
+          }
         />
-        <button type="button" onClick={handleAdd}>Adicionar</button>
+        <button type="button" onClick={handleAdd}>
+          Adicionar
+        </button>
       </form>
     </section>
   );

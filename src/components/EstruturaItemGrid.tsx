@@ -3,6 +3,7 @@ import type { EstruturaItem } from "../App";
 
 interface Props {
   itens: EstruturaItem[];
+  modo: "visualizacao" | "inclusao" | "edicao" | "exclusao";
 }
 
 const EstruturaItemGrid: React.FC<Props> = ({ itens }) => {
