@@ -154,6 +154,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
   try {
     await client.query("BEGIN");
 
+    await client.query(`UPDATE "Produto" SET id_estrutura = null WHERE id_estrutura = $1`, [id])
     await client.query(`DELETE FROM "EstruturaItem" WHERE id_estrutura = $1`, [id]);
     await client.query(`DELETE FROM "Estrutura" WHERE id_estrutura = $1`, [id]);
 
